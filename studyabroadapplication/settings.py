@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',   # https://blog.csdn.net/qq_37648632/article/details/83149803，实现手动创建验证码和前端显示，后台手动验证，ajax请求。django-simple-captcha
+    # celery and flower
+    # django-allauth 提供了常见的注册和认证方式，比如邮件、twitter、facebook、github、
+    #  python-social-auth
 ]
 
 MIDDLEWARE = [
