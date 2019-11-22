@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>University</title>
+    <!--
+            <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script>
+        'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
+        window.onload = function () {
+            //alert('hello');
+            //document.getElementById("parameter_list").style.display = "none";
+            var a = 1;
+            console.log(a);
+            console.log(0 / 0);
+            console.log('\u4e2d\u6587');
+            console.log(`this
+                        is
+                multiline str`);
+            var xiaohong = {
+                name: 'xiaohong',
+                age: 18,
+                'midle-school': 'no.1 school'
+            };
+            console.log(xiaohong['midle-school'])
+            console.log(xiaohong.toString)
+
+
+            var a = ['A', 'B', 'C'];
+            var s = new Set(['A', 'B', 'C']);
+            var m = new Map([[1, 'x'], [2, 'y'], [3, 'z']]);
+            for (var x of a) { // 遍历Array
+                console.log(x);
+            }
+            for (var x of s) { // 遍历Set
+                console.log(x);
+            }
+            for (var x of m) { // 遍历Map
+                console.log(x[0] + '=' + x[1]);
+            }
+                    function checkform() {
+            var username = document.getElementById("username");
+            //alert("mog");
+            var md5_pwd = document.getElementById('password');
+            // 把用户输入的明文变为MD5:
+            md5_pwd.value = toMD5(input_pwd.value);
+            alert(username.value);
+            console.log(username.value);
+            return true;
+             }
+            var checkRegisterForm = function () {
+                var r1 = /^[A-Za-z0-9]{3,10}$/;
+                var r2 = /^\w{6-20}$/;
+                var u = document.getElementById("username");
+                var p1 = document.getElementById("password");
+                var p2 = document.getElementById("password-2")
+                if (r1.test(u.value)) {
+                    return false;
+                }
+                if (!r2.test(p1.value) && !r2.test(p2.value)) {
+                    return false;
+                }
+                if (p1.value != p2.value) {
+                    return false;
+                }
+                return true;
+            }
+            $(function () {
+                $('#s1').mousemove(function (e) {
+                    $('#ispan').text(e.pageX + '*' + e.pageY);
+                });
+            });
+            var changtime = 0;
+            $('#username').change(function () {
+                changtime++;
+                console.log("changed"+changtime+"times");
+            });
+
+
+            $('#submit').click(function () {
+                window.open('/');         
+            });
+
+
+
+            $('#reset').click(function () {
+                $('#test-form').slideToggle(3000);
+                //$('#test-form').fadeToggle('slow');
+                //tr.fadeOut(500, function(){
+	               // tr.remove();
+                //});
+            });
+
+            $('#ajax').click(function () {
+                
+                $.get('/ajax', {
+                        name: 'Bob Lee',
+                        check: 1
+                });
+
+                //$.post('/ajax', {
+                //    name: 'Bob Lee',
+                //    check: 1
+                //});
+            });
+            var c1 = [112, 22, 33];
+            console.log(c1.map (x => x + 1));
+      
+
+
+
+
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">SAAMIS</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- 广告，算法推荐的项目,比较优秀的项目 -->
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li><a href="#shop"><span class="glyphicon glyphicon-shopping-cart"></span> Surrounding mall</a></li>
+                    <!-- 收藏自己的喜欢的项目 -->
+                    <li><a href="#shop"><span class="glyphicon glyphicon-shopping-cart"></span> Favorites</a></li>  
+                    <li><a href="#support"><span class="glyphicon glyphicon-headphones"></span> Support</a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </div>
+    <div style="margin-top:100px"></div>
+           
+    <div class="container">
+        {% if university_list %}
+        <ul>
+            {% for university in university_list %}
+            <li><a href="/university/{{university.id}}">{{university.name}}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+
+
+        <button id="ajax">ajax</button>
+        <form id="test-form" action="test">
+            <legend>请选择想要学习的编程语言：</legend>
+            <fieldset>
+                <p><label class="selectAll"><input type="checkbox"> <span class="selectAll">全选</span><span class="deselectAll">全不选</span></label> <a href="#0" class="invertSelect">反选</a></p>
+                <p><label><input type="checkbox" name="lang" value="javascript"> JavaScript</label></p>
+                <p><label><input type="checkbox" name="lang" value="python"> Python</label></p>
+                <p><label><input type="checkbox" name="lang" value="ruby"> Ruby</label></p>
+                <p><label><input type="checkbox" name="lang" value="haskell"> Haskell</label></p>
+                <p><label><input type="checkbox" name="lang" value="scheme"> Scheme</label></p>
+                <p><button type="submit">Submit</button></p>
+            </fieldset>
+        </form>
+        <!-- HTML结构 -->
+        <span id="ispan">???</span>
+        <div id="s1" style="display: block; width: 300px; height: 120px; border: 1px solid #ccc;">试试</div>
+        <div id="testMouseMoveDiv" style="display: block; width: 300px; height: 120px; border: 1px solid #ccc;">在此区域移动鼠标试试</div>
+        <form id="test-register" action="#" target="_blank" onsubmit="">
+            <p id="test-error" style="color:red"></p>
+            <p>
+                用户名: <input type="text" id="username" name="username">
+            </p>
+            <p>
+                口令: <input type="password" id="password" name="password">
+            </p>
+            <p>
+                重复口令: <input type="password" id="password-2">
+            </p>
+            <p>
+                <button type="submit">提交</button> <button id="reset" type="reset">重置</button>
+            </p>
+        </form>
+
+
+
+        <form id="login-form" method="post" onsubmit="return checkform()">
+            {% csrf_token %}
+            name:<input type="text" id="username" placeholder="input your name" name="username" />
+            password:<input type="password" id="password" name="password" /><br />
+            <input type="hidden" id="md5-password" name="password"><br />
+            <input type="radio" /><input type="checkbox" />
+            <button type="submit">submit</button><button type="reset">reset</button>
+        </form>
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+
+    </div> <!-- /container -->
+    <!--<div class="container">
+        <div class="row" id="test">
+            <div class="col-mid-3">
+                <h1>{{request.user}}</h1>
+                <h1>{{universitylist}}</h1>
+                <ul class="alert" id="parameter_list">
+                    {%for i in request.META%}
+                    <li class="alert-link">{{i}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>-->
+
+
+
+</body>
+</html>
