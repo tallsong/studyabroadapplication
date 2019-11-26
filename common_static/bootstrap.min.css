@@ -3,7 +3,6 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */ /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
@@ -269,16 +268,21 @@ td, th {
     }
 }
 
-@font-face {
-    /*修改成功*/
+/*@font-face {
+    /*修改成功
     font-family: 'Glyphicons Halflings';
     src: url({% static 'fonts/glyphicons-halflings-regular.eot' %});
     src:url({% static 'fonts/glyphicons-halflings-regular.eot?#iefix' %}) format('embedded-opentype'),
         url({% static 'fonts/glyphicons-halflings-regular.woff2' %}) format('woff2'),
         url({% static 'fonts/glyphicons-halflings-regular.woff' %}) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),
-       url({% static 'fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular' %})format('svg')
-}
+        url({% static 'fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular' %})format('svg')
+}*/
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(./fonts/glyphicons-halflings-regular.eot);
+    src: url(./fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(./fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(./fonts/glyphicons-halflings-regular.woff) format('woff'),url(./fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(./fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+}
 
 
 .glyphicon {
@@ -7218,4 +7222,4 @@ button.close {
         display: none !important
     }
 }
-/*# sourceMappingURL=bootstrap.min.css.map */
+/*# sourceMappingURL=bootstrap.min.css.map 

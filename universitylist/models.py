@@ -28,12 +28,13 @@ class University(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
-    universty= models.ForeignKey(Universty, on_delete=models.CASCADE)
+    universty= models.ForeignKey(University, on_delete=models.CASCADE)
     TOEFL = models.IntegerField(null=True)
     IELTS = models.IntegerField(null=True)
     GRE = models.IntegerField()
     tuition = models.IntegerField()
     degree = models.CharField(max_length=50)
+    time_required=models.IntegerField()
     url =  models.URLField(max_length=200)
     def __str__(self):
         return self.name
