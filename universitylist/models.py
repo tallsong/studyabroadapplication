@@ -34,6 +34,7 @@ class Project(models.Model):
     GRE = models.IntegerField()
     tuition = models.IntegerField()
     degree = models.CharField(max_length=50)
+    time_required=models.IntegerField()
     url =  models.URLField(max_length=200)
     def __str__(self):
         return self.name
