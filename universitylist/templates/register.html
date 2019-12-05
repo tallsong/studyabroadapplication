@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>University</title>
+    <!--
+            <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">SAAMIS</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" id="mynav">
+                    <!-- 广告，算法推荐的项目,比较优秀的项目 -->
+                    <li id="home"><a href="index"><span class="glyphicon glyphicon-home "></span> Home</a></li>
+                    <!--周边商场,推荐项目-->
+                    <li><a href="#shop"><span class="glyphicon glyphicon-shopping-cart"></span> Surrounding mall</a></li>
+                    <!-- 收藏自己的喜欢的项目 -->
+                    <li><a href="#favorite"><span class="glyphicon glyphicon-star"></span> Favorites</a></li>
+                    <li><a href="#support"><span class="glyphicon glyphicon-headphones"></span> Support</a></li>
+                    <!--  个人介绍什么的，请求赞助，可以放支付宝二维码-->
+                </ul>
+                <div id="login">
+                    <a href="/login" class="btn btn-default" style="float:right;margin-top:8px" id="register-button">login</a>
+                    <a href="/register" class="btn btn-default" style="float:right;margin-top:8px" id="login_button">register</a>
+                </div>
+
+
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </div>
+    <div style="margin-top:100px"></div>
+
+    <div class="container">
+        <div class="row">
+            {% if errmsg %}
+            <h1 style="text-align:center">{{errmsg}}</h1>
+            {% else %}
+            <h1 style="text-align:center">register page</h1>
+            {% endif %}
+            <div class="jumbotron" style="margin:0 auto;width:50%;text-align:center">
+                <form class="form-horizontal" role="form" method="post" action="register_handle">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username" class="col-sm-2 control-label">username</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="username" placeholder="input your username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label">email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="email" placeholder="input your email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" placeholder="input your password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password2" class="col-sm-2 control-label">repeat password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password2" placeholder="input your password again">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="allow" name="allow">Agree to user agreement
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">register</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+</body>
+
+<script>
+    'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
+    window.onresize = function () {
+        if ($('#home').css('float') === 'left') {
+            $('#login').css('display', '');
+        } else {
+            $('#login').css('display', 'none');
+        }
+    }
+    window.onload = function () {
+  
+
+        $('#mynav li').click(function () {
+            $('#mynav>li').removeClass("active");
+            $(this).addClass("active");
+
+            //$(this).attr(“class”,”active”);
+        });
+    }
+
+</script>
+</html>
