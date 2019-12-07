@@ -1,0 +1,11 @@
+from django.urls import path
+import re
+from django.conf.urls import url
+from . import views
+app_name = 'user'
+urlpatterns = [
+    # url(r'^register$', views.RegisterView.as_view(), name='register'), # зЂВс
+   #path(r'register/', views.register, name='register'),
+    #path(r'detail', views.detail, name='detail'),
+    path(r'register/', views.RegisterView.as_view(), name='register'),
+]

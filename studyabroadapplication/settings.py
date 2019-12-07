@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*',]
 # Application definition
 
 INSTALLED_APPS = [
+    'user.apps.UserConfig',
     'universitylist.apps.UniversitylistConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',   # https://blog.csdn.net/qq_37648632/article/details/83149803，实现手动创建验证码和前端显示，后台手动验证，ajax请求。django-simple-captcha
+    #'tinymce', # 富文本剪辑器
     # celery and flower
     # django-allauth 提供了常见的注册和认证方式，比如邮件、twitter、facebook、github、
     #  python-social-auth
@@ -103,7 +105,8 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+#AUTH_USER_MODEL='user.User'
+# 替换默认模型类
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
