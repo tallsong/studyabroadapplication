@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',   # https://blog.csdn.net/qq_37648632/article/details/83149803，实现手动创建验证码和前端显示，后台手动验证，ajax请求。django-simple-captcha
+    'celery',
     #'tinymce', # 富文本剪辑器
     # celery and flower
     # django-allauth 提供了常见的注册和认证方式，比如邮件、twitter、facebook、github、
@@ -153,3 +154,18 @@ STATICFILES_DIRS = (
     
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
+
+
+
+
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# smpt服务地址
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25  # SMTP协议固定端口号
+# 发送邮件的邮箱
+EMAIL_HOST_USER = '1249812431@qq.com'
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = 'blbstyjfabfygdig'
+# 收件人看到的发件人
+EMAIL_FROM = 'studyabroadapplication<1249812431@qq.com>'

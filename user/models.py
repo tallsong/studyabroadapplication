@@ -21,5 +21,6 @@ class User(models.Model):
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')  # verbose_name来设置详细名称
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     is_delete = models.BooleanField(default=False, verbose_name='删除标记')
+    is_active = models.BooleanField(default=False, verbose_name='删除标记')
     def __str__(self):
         return self.name
