@@ -30,14 +30,14 @@ class RegisterView(View):
         password2=request.POST.get('password2')
         email=request.POST.get('email')
         allow = request.POST.get('allow')
-        #if not all([username,email,password]):
-        #    return render(request,'register.html',{'errmsg':"数据不完整！"})
-        #if password != password2:
-        #    return render(request,'register.html',{'errmsg':"两次密码不相同"})
-        #if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$',email):
-        #    return render(request,'register.html',{'errmsg':"邮箱不合法"})
-        #if allow != 'on':
-        #    return render(request,'register.html',{'errmsg':"请同意协议"})
+        if not all([username,email,password]):
+            return render(request,'register.html',{'errmsg':"数据不完整！"})
+        if password != password2:
+            return render(request,'register.html',{'errmsg':"两次密码不相同"})
+        if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$',email):
+            return render(request,'register.html',{'errmsg':"邮箱不合法"})
+        if allow != 'on':
+            return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
             user=User.objects.get(name=username)
         except User.DoesNotExist:
@@ -55,14 +55,14 @@ class RegisterView(View):
         token=ser.dumps(info)
         token = token.decode() # 默认为utf-8
         subject = "weclome join studyabroadapplication"
-        massage='成果'
+        message=''
         sender=settings.EMAIL_FROM
         receiver=[email]
-        print(receiver)
-        print(sender)
+        
+        html_message = '<h1>%s, welocme to join a member of STUDYABROADAPPLICATION</h1>please click the link below to active your account<br/><a href="http://127.0.0.1:8000/user/active/%s">http://127.0.0.1:8000/user/active/%s</a>' % (username, token, token)
+
+        send_mail(subject, message, sender, receiver, html_message=html_message)
         #send_mail(subject,message,sender,receiver)
-        send_mail(subject,massage,sender,receiver)
-        #return HttpResponse("register successful")
         return redirect(reverse('universitylist:index'))
 
 class ActiveView(View):

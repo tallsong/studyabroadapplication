@@ -1,5 +1,4 @@
 from django.urls import path
-import re
 from django.conf.urls import url
 from . import views
 app_name = 'user'
@@ -9,5 +8,5 @@ urlpatterns = [
     #path(r'detail', views.detail, name='detail'),
     path(r'register/', views.RegisterView.as_view(), name='register'),
     path(r'login/',    views.LoginView.as_view(), name='login'),
-    #path(r'active/(?P<token>.*)',views.ActiveView.as_view(), name='active'), # 用户激活
+    path(r'active/<str:token>',views.ActiveView.as_view(), name='active'), # 用户激活
 ]

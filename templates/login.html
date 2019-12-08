@@ -94,28 +94,29 @@
 
 
 
-    </div>
+    <script>
+        'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
+        window.onresize = function () {
+            if ($('#home').css('float') === 'left') {
+                $('#login').css('display', '');
+            } else {
+                $('#login').css('display', 'none');
+            }
+        }
+        window.onload = function () {
+
+
+            $('#mynav li').click(function () {
+                $('#mynav>li').removeClass("active");
+                $(this).addClass("active");
+
+                //$(this).attr(“class”,”active”);
+            });
+        }
+
+    </script>
+
 </body>
 
-<script>
-    'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
-    window.onresize = function () {
-        if ($('#home').css('float') === 'left') {
-            $('#login').css('display', '');
-        } else {
-            $('#login').css('display', 'none');
-        }
-    }
-    window.onload = function () {
-  
 
-        $('#mynav li').click(function () {
-            $('#mynav>li').removeClass("active");
-            $(this).addClass("active");
-
-            //$(this).attr(“class”,”active”);
-        });
-    }
-
-</script>
 </html>
