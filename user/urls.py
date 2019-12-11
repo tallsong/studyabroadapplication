@@ -3,10 +3,10 @@ from django.conf.urls import url
 from . import views
 app_name = 'user'
 urlpatterns = [
-    # url(r'^register$', views.RegisterView.as_view(), name='register'), # ×¢²á
+    # url(r'^register$', views.RegisterView.as_view(), name='register'), # ×¢ï¿½ï¿½
    #path(r'register/', views.register, name='register'),
     #path(r'detail', views.detail, name='detail'),
     path(r'register/', views.RegisterView.as_view(), name='register'),
     path(r'login/',    views.LoginView.as_view(), name='login'),
-    path(r'active/<str:token>',views.ActiveView.as_view(), name='active'), # ÓÃ»§¼¤»î
+    path(r'active/<str:token>',views.ActiveView.as_view(), name='active'), # ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 ]

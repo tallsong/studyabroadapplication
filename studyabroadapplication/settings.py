@@ -106,7 +106,7 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-#AUTH_USER_MODEL='user.User'
+AUTH_USER_MODEL='user.User'
 # 替换默认模型类
 
 # Password validation
@@ -169,3 +169,20 @@ EMAIL_HOST_USER = '1249812431@qq.com'
 EMAIL_HOST_PASSWORD = 'blbstyjfabfygdig'
 # 收件人看到的发件人
 EMAIL_FROM = 'studyabroadapplication<1249812431@qq.com>'
+
+
+
+# Django的缓存配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/9",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# 配置session存储
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

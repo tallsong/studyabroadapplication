@@ -52,7 +52,7 @@
     <div class="container">
         <div class="row">
             {% if errmsg %}
-            <h1 style="text-align:center">{{errmsg}}</h1>
+            <h1 style="text-align:center">{{errmsg|safe}}</h1>
             {% else %}
             <h1 style="text-align:center">register page</h1>
             {% endif %}

@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import Http404, HttpResponseRedirect,HttpResponse
 from django.template import  RequestContext,loader
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.conf import settings
 from django.core.mail import send_mail
@@ -15,7 +16,76 @@ from .models import User
 
 class LoginView(View):
     def get(self, request):
-        return render(request, 'login.html') 
+        '''显示登录页面'''
+        # 判断是否记住了用户名
+        if 'username' in request.COOKIES:
+            username = request.COOKIES.get('username')
+            checked = 'checked'
+        else:
+            username = ''
+            checked = ''
+
+        # 使用模板
+        return render(request, 'login.html', {'username':username, 'checked':checked})
+    def post(self, request):
+        '''登录校验'''
+        # 接收数据
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # 校验数据
+        if not all([username, password]):
+            return render(request, 'login.html', {'errmsg':'数据不完整'})
+
+        # 业务处理:登录校验
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # 用户名密码正确
+            if user.is_active:
+                # 用户已激活
+                # 记录用户的登录状态
+                login(request, user)
+
+                # 跳转到首页
+                response = redirect(reverse('universitylist:index')) # HttpResponseRedirect
+
+                # 判断是否需要记住用户名
+                remember = request.POST.get('remember')
+
+                if remember == 'on':
+                    # 记住用户名
+                    response.set_cookie('username', username, max_age=7*24*3600)
+                else:
+                    response.delete_cookie('username')
+
+                # 返回response
+                return response
+            else:
+                # 用户未激活
+                return render(request, 'login.html', {'errmsg':'账户未激活'})
+        else:
+            # 用户名或密码错误
+            return render(request, 'login.html', {'errmsg':'用户名或密码错误'})
+
+
+
+    #def get(self, request):
+    #    return render(request, 'login.html')
+    #def post(self, request):
+    #    email=request.POST.get('email')
+    #    password=request.POST.get('password')
+    #    if not all([email,password]):
+    #        return render(request,'login.html',{'errmsg':"请输入用户名和密码"})
+    #    try:
+    #        user=User.objects.get(email=email,is_active=1)
+    #    except User.DoesNotExist:
+    #        user=None
+    #    if not user:
+    #        return render(request,'register.html',{'errmsg':'''邮箱不存在请先<a href="/user/register/"  style="margin-top:8px" id="register-button">注册</a>'''})
+    #    if(user.password!=password):
+    #        return render(request,'login.html',{'errmsg':"密码错误"})
+    #    else:
+    #        return render(request,'login.html',{'errmsg':"login successful"})
 
 
 class RegisterView(View):
@@ -39,15 +109,17 @@ class RegisterView(View):
         if allow != 'on':
             return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
-            user=User.objects.get(name=username)
+            user=User.objects.get(email=email)
         except User.DoesNotExist:
             user=None
         if user:
-            return render(request,'register.html',{'errmsg':"用户名已经存在"})
-        user=User()
-        user.name=username
-        user.email=email
-        user.password=password
+            return render(request,'register.html',{'errmsg':'''邮箱已经被注册，请直接<a href="/user/login/"  style="margin-top:8px" id="register-button">登录</a>'''})
+        #user=User()
+        #user.username=username
+        #user.email=email
+        #user.password=password
+        user = User.objects.create_user(username, email, password)
+        user.is_active = 0
         user.save()
 
         ser=Serializer(settings.SECRET_KEY,3600)
@@ -87,11 +159,6 @@ class ActiveView(View):
             # 激活链接已过期
             return HttpResponse('激活链接已过期')
 
-
-
-
-
-
 def register(request):
     if(request.method=='GET'):
         return render(request, 'register.html') 
@@ -110,13 +177,13 @@ def register(request):
         #if allow != 'on':
         #    return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
-            user=User.objects.get(name=username)
+            user=User.objects.get(username=username)
         except User.DoesNotExist:
             user=None
         if user:
             return render(request,'register.html',{'errmsg':"用户名已经存在"})
         user=User()
-        user.name=username
+        user.username=username
         user.email=email
         user.password=password
         user.save()

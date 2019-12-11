@@ -57,13 +57,12 @@
             <h1 style="text-align:center">register page</h1>
             {% endif %}
             <div class="jumbotron" style="margin:0 auto;width:50%;text-align:center">
-                <form class="form-horizontal" role="form" method="post" action="/user/register/">
+                <form class="form-horizontal" role="form" method="post" action="/user/login/">
                     {% csrf_token %}
-
                     <div class="form-group">
-                        <label for="email" class="col-sm-2 control-label">email</label>
+                        <label for="username" class="col-sm-2 control-label">username</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="email" name="email" placeholder="input your email">
+                            <input type="text" class="form-control" id="username" name="username" value="{{ username }}" placeholder="input your username">
                         </div>
                     </div>
                     <div class="form-group">
@@ -76,7 +75,7 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="allow" name="allow">Agree to user agreement
+                                    <input type="checkbox" id="remember" name="remember" {{ checked }}>remember
                                 </label>
                             </div>
                         </div>
