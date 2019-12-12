@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,45 +7,119 @@
     <title>简单的天气查询</title>
 </head>
 <body>
-        <p>输入当前城市:<input type="text" id="city"></p>
-        <button type="submit" onclick="getWeather()">查询</button>
-        <p id="weatherInfo"></p>
+ 
+
+
+
+
+    <p>输入当前城市:<input type="text" id="city"></p>
+    <button type="submit" onclick="getWeather()">查询</button>
+    <p id="weatherInfo"></p>
     <script>
-        function getWeather(){
+        function getWeather() {
             let url = 'https://www.apiopen.top/weatherApi?city=';
             let city = document.getElementById('city');
             // 获取要查询的城市
-            let newURL = url + city.value; 
+            let newURL = url + city.value;
             console.log(newURL);
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState === 4){
-                    if(xhr.status === 200){
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
                         return success(xhr.responseText);
-                    }else{
+                    } else {
                         alert('失败！')
                     }
                 }
             }
-            xhr.open('GET',newURL);
+            xhr.open('GET', newURL);
             xhr.send();
         }
 
-        function success(data){
+        function success(data) {
             let weather = document.getElementById('weatherInfo');
             let weatherInfo = JSON.parse(data);
-            if(weatherInfo.code ===  200){
-                weather.innerHTML = '查询成功' + '<br>'+
-                                     '当前城市：'+weatherInfo.data.city+ '<br>'+
-                                     '当前温度：'+weatherInfo.data.wendu+'<br>'+
-                                     '气温：'+'最'+weatherInfo.data.forecast[0].high +'，最'+weatherInfo.data.forecast[0].low+'<br>'+
-                                     '天气：'+weatherInfo.data.forecast[0].type+'<br>'+
-                                     '风向：'+weatherInfo.data.forecast[0].fengxiang + weatherInfo.data.forecast[0].fengli+'<br>' +
-                                     '注意：'+weatherInfo.data.ganmao
-            }else{
-                weather.innerText  = weatherInfo.msg;
+            if (weatherInfo.code === 200) {
+                weather.innerHTML = '查询成功' + '<br>' +
+                    '当前城市：' + weatherInfo.data.city + '<br>' +
+                    '当前温度：' + weatherInfo.data.wendu + '<br>' +
+                    '气温：' + '最' + weatherInfo.data.forecast[0].high + '，最' + weatherInfo.data.forecast[0].low + '<br>' +
+                    '天气：' + weatherInfo.data.forecast[0].type + '<br>' +
+                    '风向：' + weatherInfo.data.forecast[0].fengxiang + weatherInfo.data.forecast[0].fengli + '<br>' +
+                    '注意：' + weatherInfo.data.ganmao
+            } else {
+                weather.innerText = weatherInfo.msg;
             }
         }
     </script>
 </body>
-</html
+
+<!--<form id="login-form" method="post" onsubmit="return checkform()">
+         {% csrf_token %}
+         name:<input type="text" id="username" placeholder="input your name" name="username" />
+         password:<input type="password" id="password" name="password" /><br />
+         <input type="hidden" id="md5-password" name="password"><br />
+         <input type="radio" /><input type="checkbox" />
+         <button type="submit">submit</button><button type="reset">reset</button>
+     </form>
+     <form class="form-signin">
+         <h2 class="form-signin-heading">Please sign in</h2>
+         <label for="inputEmail" class="sr-only">Email address</label>
+         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+         <label for="inputPassword" class="sr-only">Password</label>
+         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+         <div class="checkbox">
+             <label>
+                 <input type="checkbox" value="remember-me"> Remember me
+             </label>
+         </div>
+         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+     </form>
+     <button id="ajax">ajax</button>
+     <form id="test-form" action="ajax">
+         <legend>请选择想要学习的编程语言：</legend>
+         <fieldset>
+             <p><label class="selectAll"><input type="checkbox"> <span class="selectAll">全选</span><span class="deselectAll">全不选</span></label> <a href="#0" class="invertSelect">反选</a></p>
+             <p><label><input type="checkbox" name="lang" value="javascript"> JavaScript</label></p>
+             <p><label><input type="checkbox" name="lang" value="python"> Python</label></p>
+             <p><label><input type="checkbox" name="lang" value="ruby"> Ruby</label></p>
+             <p><label><input type="checkbox" name="lang" value="haskell"> Haskell</label></p>
+             <p><label><input type="checkbox" name="lang" value="scheme"> Scheme</label></p>
+             <p><button type="submit">Submit</button></p>
+         </fieldset>
+     </form>
+      HTML结构
+     <span id="ispan">???</span>
+     <div id="s1" style="display: block; width: 300px; height: 120px; border: 1px solid #ccc;">试试</div>
+     <div id="testMouseMoveDiv" style="display: block; width: 300px; height: 120px; border: 1px solid #ccc;">在此区域移动鼠标试试</div>
+     <form id="test-register" action="#" target="_blank" onsubmit="">
+         <p id="test-error" style="color:red"></p>
+         <p>
+             用户名: <input type="text" id="username" name="username">
+         </p>
+         <p>
+             口令: <input type="password" id="password" name="password">
+         </p>
+         <p>
+             重复口令: <input type="password" id="password-2">
+         </p>
+         <p>
+             <button type="submit">提交</button> <button id="reset" type="reset">重置</button>
+         </p>
+     </form>
+ </div>  /container-->
+<!--<div class="container">
+    <div class="row" id="test">
+        <div class="col-mid-3">
+            <h1>{{request.user}}</h1>
+            <h1>{{universitylist}}</h1>
+            <ul class="alert" id="parameter_list">
+                {%for i in request.META%}
+                <li class="alert-link">{{i}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>-->
+</html>
