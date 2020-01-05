@@ -3,8 +3,17 @@ from django.db import models
 from django.utils import timezone
 # Create your models here.
 
+# https://country-code.cl/
+class Continent(models.Model):
+    name = models.CharField(max_length=50,unique=True)
+    short_name = models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
+
 class Country(models.Model):
     name = models.CharField(max_length=50,unique=True)
+    continent=models.ForeignKey(Continent,on_delete=models.CASCADE)
+    short_name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
 
@@ -54,3 +63,8 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
     def __str__(self):
         return self.choice_text
+
+
+
+# 根据国家排名查找大学综合排名
+# 根据专业查找在某一国家大学排名

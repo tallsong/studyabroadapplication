@@ -2,14 +2,17 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import Http404, HttpResponseRedirect,HttpResponse
 from django.template import  RequestContext,loader
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.views.generic import View
 from django.conf import settings
 from django.core.mail import send_mail
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired
+from utils.mixin import LoginRequiredMixin
+from django_redis import get_redis_connection
 import re
 from .models import User
+from universitylist.models import Country
 # Create your views here.
 
 
@@ -39,13 +42,16 @@ class LoginView(View):
 
         # 业务处理:登录校验
         user = authenticate(username=username, password=password)
+      
         if user is not None:
             # 用户名密码正确
+
             if user.is_active:
                 # 用户已激活
                 # 记录用户的登录状态
+                
                 login(request, user)
-
+                
                 # 跳转到首页
                 response = redirect(reverse('universitylist:index')) # HttpResponseRedirect
 
@@ -59,6 +65,7 @@ class LoginView(View):
                     response.delete_cookie('username')
 
                 # 返回response
+                
                 return response
             else:
                 # 用户未激活
@@ -86,6 +93,15 @@ class LoginView(View):
     #        return render(request,'login.html',{'errmsg':"密码错误"})
     #    else:
     #        return render(request,'login.html',{'errmsg':"login successful"})
+class LogoutView(View):
+    '''退出登录'''
+    def get(self, request):
+        '''退出登录'''
+        # 清除用户的session信息
+        logout(request)
+
+        # 跳转到首页
+        return redirect(reverse('universitylist:index'))
 
 
 class RegisterView(View):
@@ -158,6 +174,25 @@ class ActiveView(View):
         except SignatureExpired as e:
             # 激活链接已过期
             return HttpResponse('激活链接已过期')
+
+class UserInfoView(LoginRequiredMixin,View):
+    '''用户中心-信息页'''
+    def get(self, request):
+        # 获取用户的个人信息
+        user = request.user
+        con = get_redis_connection('default')
+        history_key = 'history_%d'%user.id
+        country_ids = con.lrange(history_key, 0, 4)
+        country_list = []
+        for id in country_ids:
+            country=Country.objects.get(id=int(id))
+            country_list.append(country)
+
+        ## 组织上下文
+        context = {'country_list':country_list,}
+
+        #除了你给模板文件传递的模板变量之外，django框架会把request.user也传给模板文件
+        return render(request, 'user_info.html', context)
 
 def register(request):
     if(request.method=='GET'):

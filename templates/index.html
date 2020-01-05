@@ -2,26 +2,29 @@
 {% block title %}index{% endblock title %}
 
 {% block body %}
+{% load static %}
 <div class="container">
     <div class="row">
         <h1 style="text-align:center">University</h1>
         <div class="col-md-12" style="border:1px solid black">
             <table class="table table-striped">
                 <tr>
+                    <td>number</td>
                     <td>name</td>
-                    <td>toefl</td>
-                    <td>rank</td>
+                    <td>flag</td>
                 </tr>
+                {% if countries %}
+
+                {% for country in countries %}
                 <tr>
-                    <td>name</td>
-                    <td>toefl</td>
-                    <td>rank</td>
+                    <td>{{country.id}}</td>
+                    <td><a href="{{country.id}}/">{{country.name}}</a></td>
+                    <td><img src='static/img/flag/{{country.name}}.jpg' /></td>
+  
+
                 </tr>
-                <tr>
-                    <td>name</td>
-                    <td>toefl</td>
-                    <td>rank</td>
-                </tr>
+                {% endfor %}
+                {% endif %}
             </table>
 
         </div>
@@ -29,14 +32,7 @@
 </div>
 
 <div class="container">
-    {% if universities %}
-    <ul>
-        {% for university in universities %}
-        <li><a href="{{university.id}}">{{university.name}}</a></li>
-        {% endfor %}
-    </ul>
 
-    {% endif %}
 
 </div>
 
