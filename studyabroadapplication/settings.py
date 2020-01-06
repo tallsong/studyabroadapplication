@@ -149,8 +149,7 @@ STATIC_URL = '/static/'
 
   
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),  ## this is common static
-    
+    os.path.join(BASE_DIR, "common_static"),  ## this is common static  
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') # this is collect_static
 

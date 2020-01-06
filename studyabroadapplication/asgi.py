@@ -1,5 +1,5 @@
 """
-ASGI config for django3 project.
+ASGI config for studyabroadapplication project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
