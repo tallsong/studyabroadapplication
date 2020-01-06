@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#i2t0zumqho(skl++vf*(o&!ju$let0e$ta_2dzkz@(y5&9lkh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*',]
 
@@ -147,9 +147,9 @@ USE_TZ = True   #注释解决时间差八小时的问题
 
 STATIC_URL = '/static/'
 
-
+  
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "common_static"),
+    os.path.join(BASE_DIR, "static"),  ## this is common static
     
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
@@ -186,6 +186,10 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-
 # 配置登录url地址
 LOGIN_URL='/user/login' # /accounts/login
+my_host='39.105.187.101'
+try:
+    from .settings_location import *
+except ImportError as e:
+    print(e.args)
