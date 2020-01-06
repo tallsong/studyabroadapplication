@@ -43,7 +43,7 @@
                     {% if user.is_authenticated %}
                     <div class="dropdown">
 
-                        <div style="float:right;margin-top:8px" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">welcome：<em>{{ user.first_name }}</em></div>
+                        <div style="float:right;margin-top:8px" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">welcome：<em>{{ user.username }}</em></div>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="border:none;text-align:center;position:inherit;float:right;margin-top:30px;margin-right:-150px;background-color:transparent">
                             <li role="presentation">
                                 <a style="margin-right:20px" role="menuitem" tabindex="-1" href="{% url 'user:userinfo' %}">userinfo</a>

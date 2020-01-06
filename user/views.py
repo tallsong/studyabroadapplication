@@ -147,7 +147,7 @@ class RegisterView(View):
         sender=settings.EMAIL_FROM
         receiver=[email]
         
-        html_message = '<h1>%s, welocme to join a member of STUDYABROADAPPLICATION</h1>please click the link below to active your account<a href="http://%s/user/active/%s">link</a>' % (username,settings.MY_HOST,token)
+        html_message = '<h1>%s, welocme to join a member of STUDYABROADAPPLICATION</h1>please click the link below to active your account<a href="http://%s/user/active/%s">link</a> <br/> <h1>http://%s/user/active/%s</h1>' % (username,settings.MY_HOST,token,settings.MY_HOST,token)
 
         send_mail(subject, message, sender, receiver, html_message=html_message)
         #send_mail(subject,message,sender,receiver)
