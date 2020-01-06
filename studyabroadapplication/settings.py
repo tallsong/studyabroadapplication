@@ -188,7 +188,7 @@ SESSION_CACHE_ALIAS = "default"
 
 # 配置登录url地址
 LOGIN_URL='/user/login' # /accounts/login
-my_host='39.105.187.101'
+MY_HOST='39.105.187.101'
 try:
     from .settings_location import *
 except ImportError as e:
