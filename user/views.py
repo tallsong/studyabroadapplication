@@ -146,7 +146,8 @@ class RegisterView(View):
         send_register_active_email.delay(email,username,token)
         #send_mail(subject, message, sender, receiver, html_message=html_message)
         #send_mail(subject,message,sender,receiver)
-        return redirect(reverse('universitylist:index'))
+        return render(request,'login.html',{'errmsg':'注册邮件已经成功发送到您的邮箱，请点击邮箱激活账号'})
+        #return redirect(reverse('universitylist:index'))
 
 class ActiveView(View):
     '''用户激活'''
@@ -168,7 +169,7 @@ class ActiveView(View):
             return redirect(reverse('user:login'))
         except SignatureExpired as e:
             # 激活链接已过期
-            return HttpResponse('激活链接已过期')
+            return HttpResponse('<h1>激活链接已过期</h1>')
 
 class UserInfoView(LoginRequiredMixin,View):
     '''用户中心-信息页'''

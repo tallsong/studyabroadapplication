@@ -3,38 +3,69 @@
 
 {% block body %}
 {% load static %}
+
+
+
 <div class="container">
     <div class="row">
         <h1 style="text-align:center">University</h1>
         <div class="col-md-12" style="border:1px solid black">
             <table class="table table-striped">
-                <tr>
-                    <td>number</td>
-                    <td>name</td>
-                    <td>flag</td>
-                </tr>
-                {% if countries %}
-
-                {% for country in countries %}
+                {% for country in countries.object_list %}             
                 <tr>
                     <td>{{country.id}}</td>
                     <td><a href="{{country.id}}/">{{country.name}}</a></td>
                     <td><img src='static/img/flag/{{country.name}}.jpg' /></td>
-  
-
                 </tr>
                 {% endfor %}
-                {% endif %}
             </table>
+            <p>
+                <button type="button" class="btn btn-primary btn-lg " id="previous">previous page</button>
+                {# countries.paginator.page_range 这个函数返回包含一个所有页码数的 range 对象 #}
+                {# 即 range(1, topics.paginator.num_pages + 1) #}
 
+                {% for page_number in countries.paginator.page_range %}
+                {% ifequal page_number  country.id %}
+                {{ page_number }}
+                {% else %}
+                <a href="?page={{ page_number }}">{{ page_number }}</a>
+                {% endifequal %}
+                {% endfor %}
+                <button type="button" class="btn btn-primary btn-lg " id="next">next page</button>
+            </p>
         </div>
     </div>
 </div>
+<script>
+    $('#next').click(function () {
+        var num = $('p a').last().text();
+        var re = /(\d+)$/;
+        var cnum = 1;
+        if (re.exec(window.location.href) !== null) {
+            cnum = Number(re.exec(window.location.href)[0]);
+        }
+        if (cnum < num) {
+            window.location.href = '?page=' + String(cnum + 1);
+        }
+        
 
-<div class="container">
+        
+    })
+    $('#previous').click(function () {
+        var num = $('p a').last().text();
+        var re = /(\d+)$/;
+        var cnum = 1;
+        if (re.exec(window.location.href) !== null) {
+            cnum = Number(re.exec(window.location.href)[0]);
+        }
+        if (cnum > 1) {
+            window.location.href = '?page=' + String(cnum - 1);
+        }
+        
+    })
 
 
-</div>
+</script>
 
 {% endblock body %}
 
