@@ -13,6 +13,7 @@ from django_redis import get_redis_connection
 import re
 from .models import User
 from universitylist.models import Country
+from celery_tasks.tasks import send_register_active_email
 # Create your views here.
 
 
@@ -125,11 +126,11 @@ class RegisterView(View):
         if allow != 'on':
             return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
-            user=User.objects.get(email=email)
+            user=User.objects.get(username=username)
         except User.DoesNotExist:
             user=None
         if user:
-            return render(request,'register.html',{'errmsg':'''邮箱已经被注册，请直接<a href="/user/login/"  style="margin-top:8px" id="register-button">登录</a>'''})
+            return render(request,'register.html',{'errmsg':'''用户名已经存在，请直接<a href="/user/login/"  style="margin-top:8px" id="register-button">登录</a>或者更换用户名重新注册'''})
         #user=User()
         #user.username=username
         #user.email=email
@@ -142,14 +143,8 @@ class RegisterView(View):
         info={'confirm':user.id}
         token=ser.dumps(info)
         token = token.decode() # 默认为utf-8
-        subject = "weclome join studyabroadapplication"
-        message=''
-        sender=settings.EMAIL_FROM
-        receiver=[email]
-        
-        html_message = '<h1>%s, welocme to join a member of STUDYABROADAPPLICATION</h1>please click the link below to active your account<a href="http://%s/user/active/%s">link</a> <br/> <h1>http://%s/user/active/%s</h1>' % (username,settings.MY_HOST,token,settings.MY_HOST,token)
-
-        send_mail(subject, message, sender, receiver, html_message=html_message)
+        send_register_active_email.delay(email,username,token)
+        #send_mail(subject, message, sender, receiver, html_message=html_message)
         #send_mail(subject,message,sender,receiver)
         return redirect(reverse('universitylist:index'))
 
