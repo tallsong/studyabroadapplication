@@ -160,11 +160,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static') # this is collect_static
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # smpt服务地址
 EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 25  # SMTP协议固定端口号
+EMAIL_PORT = 465  # SMTP协议固定端口号
 # 发送邮件的邮箱
 EMAIL_HOST_USER = '1249812431@qq.com'
 # 在邮箱中设置的客户端授权密码
 EMAIL_HOST_PASSWORD = 'blbstyjfabfygdig'
+EMAIL_USE_SSL = True 
 # 收件人看到的发件人
 EMAIL_FROM = 'studyabroadapplication<1249812431@qq.com>'
 
@@ -188,6 +189,7 @@ SESSION_CACHE_ALIAS = "default"
 # 配置登录url地址
 LOGIN_URL='/user/login' # /accounts/login
 MY_HOST='39.105.187.101'
+
 try:
     from .settings_location import *
 except ImportError as e:

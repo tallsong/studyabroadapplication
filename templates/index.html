@@ -9,9 +9,13 @@
 <div class="container">
     <div class="row">
         <h1 style="text-align:center">University</h1>
+        <h2 style="text-align:center">
+            {# topics.paginator.number_pages 返回总页数 #}
+            Page {{ countries.number }} of {{ countries.paginator.num_pages }}
+        </h2>
         <div class="col-md-12" style="border:1px solid black">
             <table class="table table-striped">
-                {% for country in countries.object_list %}             
+                {% for country in countries.object_list %}
                 <tr>
                     <td>{{country.id}}</td>
                     <td><a href="{{country.id}}/">{{country.name}}</a></td>
@@ -19,8 +23,14 @@
                 </tr>
                 {% endfor %}
             </table>
-            <p>
-                <button type="button" class="btn btn-primary btn-lg " id="previous">previous page</button>
+            <p id="page" align="center">
+
+                {% if countries.has_previous %}
+                <a href="?page={{ countries.previous_page_number }}" type="button" class="btn btn-primary btn-lg " id="previous">previous page</a>
+
+                {% else %}
+                <a href="" type="button" class="btn btn-primary btn-lg " id="previous">previous page</a>
+                {% endif %}
                 {# countries.paginator.page_range 这个函数返回包含一个所有页码数的 range 对象 #}
                 {# 即 range(1, topics.paginator.num_pages + 1) #}
 
@@ -31,12 +41,27 @@
                 <a href="?page={{ page_number }}">{{ page_number }}</a>
                 {% endifequal %}
                 {% endfor %}
-                <button type="button" class="btn btn-primary btn-lg " id="next">next page</button>
+                {% if countries.has_next %}
+                <a href="?page={{ countries.next_page_number }}" type="button" class="btn btn-primary btn-lg " id="next">next page</a>
+                {% else %}
+                <a href="" type="button" class="btn btn-primary btn-lg " id="next">next page</a>
+                {% endif %}
+
             </p>
+
+
         </div>
     </div>
 </div>
 <script>
+    var re = /(\d+)$/;
+    var cnum = 1;
+    if (re.exec(window.location.href) !== null) {
+        cnum = Number(re.exec(window.location.href)[0]);
+    }
+    console.log(cnum);
+    $('#page').children().eq(cnum).css("color",function(){return "red";});
+    console.log();
     $('#next').click(function () {
         var num = $('p a').last().text();
         var re = /(\d+)$/;
@@ -47,9 +72,6 @@
         if (cnum < num) {
             window.location.href = '?page=' + String(cnum + 1);
         }
-        
-
-        
     })
     $('#previous').click(function () {
         var num = $('p a').last().text();
@@ -61,7 +83,6 @@
         if (cnum > 1) {
             window.location.href = '?page=' + String(cnum - 1);
         }
-        
     })
 
 

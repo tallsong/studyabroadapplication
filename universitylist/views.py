@@ -10,7 +10,7 @@ import re
 def index(request):
     limit = 15
     #universities = University.objects.order_by('id')
-    countries = Country.objects.all()
+    countries = Country.objects.all().order_by("id")
     paginator = Paginator(countries, limit)
     page = request.GET.get('page')  # 获取页码
     try:
