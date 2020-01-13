@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from db.base_model import BaseModel
 from django.utils import timezone
 # Create your models here.
 
@@ -10,12 +11,13 @@ class Continent(models.Model):
     def __str__(self):
         return self.name
 
-class Country(models.Model):
+class Country(BaseModel):
     name = models.CharField(max_length=50,unique=True)
     continent=models.ForeignKey(Continent,on_delete=models.CASCADE)
     short_name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
+
 
 
 class Province(models.Model):

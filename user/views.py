@@ -11,11 +11,10 @@ from itsdangerous import SignatureExpired
 from utils.mixin import LoginRequiredMixin
 from django_redis import get_redis_connection
 import re
-from .models import User
+from user.models import User
 from universitylist.models import Country
 from celery_tasks.tasks import send_register_active_email
 # Create your views here.
-
 
 
 class LoginView(View):
@@ -40,6 +39,25 @@ class LoginView(View):
         # 校验数据
         if not all([username, password]):
             return render(request, 'login.html', {'errmsg':'数据不完整'})
+        try:
+            if not User.objects.get(username=username).is_active:
+                return render(request, 'login.html', {'errmsg':'账户未激活,请检查邮件激活账户'})
+        except Exception as e:
+            #print(e.args)
+            pass
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # 业务处理:登录校验
         user = authenticate(username=username, password=password)
@@ -61,16 +79,13 @@ class LoginView(View):
 
                 if remember == 'on':
                     # 记住用户名
-                    response.set_cookie('username', username, max_age=7*24*3600)
+                    response.set_cookie('username', username, max_age=7 * 24 * 3600)
                 else:
                     response.delete_cookie('username')
 
-                # 返回response
+                # 返回response              
+                    return response
                 
-                return response
-            else:
-                # 用户未激活
-                return render(request, 'login.html', {'errmsg':'账户未激活'})
         else:
             # 用户名或密码错误
             return render(request, 'login.html', {'errmsg':'用户名或密码错误'})
@@ -112,10 +127,10 @@ class RegisterView(View):
         return render(request, 'register.html') 
 
     def post(self, request):
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        password2=request.POST.get('password2')
-        email=request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        email = request.POST.get('email')
         allow = request.POST.get('allow')
         if not all([username,email,password]):
             return render(request,'register.html',{'errmsg':"数据不完整！"})
@@ -126,9 +141,9 @@ class RegisterView(View):
         if allow != 'on':
             return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
-            user=User.objects.get(username=username)
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
-            user=None
+            user = None
         if user:
             return render(request,'register.html',{'errmsg':'''用户名已经存在，请直接<a href="/user/login/"  style="margin-top:8px" id="register-button">登录</a>或者更换用户名重新注册'''})
         #user=User()
@@ -139,12 +154,13 @@ class RegisterView(View):
         user.is_active = 0
         user.save()
 
-        ser=Serializer(settings.SECRET_KEY,3600)
-        info={'confirm':user.id}
-        token=ser.dumps(info)
+        ser = Serializer(settings.SECRET_KEY,3600)
+        info = {'confirm':user.id}
+        token = ser.dumps(info)
         token = token.decode() # 默认为utf-8
         send_register_active_email.delay(email,username,token)
-        #send_mail(subject, message, sender, receiver, html_message=html_message)
+        #send_mail(subject, message, sender, receiver,
+        #html_message=html_message)
         #send_mail(subject,message,sender,receiver)
         return render(request,'login.html',{'errmsg':'注册邮件已经成功发送到您的邮箱，请点击邮箱激活账号'})
         #return redirect(reverse('universitylist:index'))
@@ -171,17 +187,18 @@ class ActiveView(View):
             # 激活链接已过期
             return HttpResponse('<h1>激活链接已过期</h1>')
 
+
 class UserInfoView(LoginRequiredMixin,View):
     '''用户中心-信息页'''
     def get(self, request):
         # 获取用户的个人信息
         user = request.user
         con = get_redis_connection('default')
-        history_key = 'history_%d'%user.id
+        history_key = 'history_%d' % user.id
         country_ids = con.lrange(history_key, 0, 4)
         country_list = []
         for id in country_ids:
-            country=Country.objects.get(id=int(id))
+            country = Country.objects.get(id=int(id))
             country_list.append(country)
 
         ## 组织上下文
@@ -191,32 +208,33 @@ class UserInfoView(LoginRequiredMixin,View):
         return render(request, 'user_info.html', context)
 
 def register(request):
-    if(request.method=='GET'):
+    if(request.method == 'GET'):
         return render(request, 'register.html') 
     else:
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        password2=request.POST.get('password2')
-        email=request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        email = request.POST.get('email')
         allow = request.POST.get('allow')
         #if not all([username,email,password]):
         #    return render(request,'register.html',{'errmsg':"数据不完整！"})
         #if password != password2:
         #    return render(request,'register.html',{'errmsg':"两次密码不相同"})
-        #if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$',email):
+        #if not
+        #re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$',email):
         #    return render(request,'register.html',{'errmsg':"邮箱不合法"})
         #if allow != 'on':
         #    return render(request,'register.html',{'errmsg':"请同意协议"})
         try:
-            user=User.objects.get(username=username)
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
-            user=None
+            user = None
         if user:
             return render(request,'register.html',{'errmsg':"用户名已经存在"})
-        user=User()
-        user.username=username
-        user.email=email
-        user.password=password
+        user = User()
+        user.username = username
+        user.email = email
+        user.password = password
         user.save()
         #return HttpResponse("register successful")
         return redirect(reverse('universitylist:index'))
