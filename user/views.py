@@ -45,20 +45,6 @@ class LoginView(View):
         except Exception as e:
             #print(e.args)
             pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         # 业务处理:登录校验
         user = authenticate(username=username, password=password)
       
@@ -84,7 +70,7 @@ class LoginView(View):
                     response.delete_cookie('username')
 
                 # 返回response              
-                    return response
+                return response
                 
         else:
             # 用户名或密码错误
