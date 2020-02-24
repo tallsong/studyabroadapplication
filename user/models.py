@@ -14,7 +14,7 @@ class User(AbstractUser, BaseModel):
     #is_delete = models.BooleanField(default=False, verbose_name='删除标记')
     #is_active = models.BooleanField(default=False, verbose_name='激活标记')
     class Meta:
-        db_table = 'user_user'
+        db_table = 'user'
         verbose_name = 'my_user'
         verbose_name_plural = verbose_name
     def __str__(self):

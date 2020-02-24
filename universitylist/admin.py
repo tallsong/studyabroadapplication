@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.cache import cache
 # Register your models here.
-from universitylist.models import Question,Choice,Country,Province,University,Project
+from universitylist.models import Question,Choice,Country,University,Project
 class BaseModelAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         '''新增或更新表中的数据时调用'''
@@ -24,6 +24,5 @@ class CountryAdmin(BaseModelAdmin):
 admin.site.register(Question)
 admin.site.register(Choice)
 admin.site.register(Country,CountryAdmin)
-admin.site.register(Province)
 admin.site.register(University)
 admin.site.register(Project)

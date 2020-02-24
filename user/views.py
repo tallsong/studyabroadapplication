@@ -12,7 +12,7 @@ from utils.mixin import LoginRequiredMixin
 from django_redis import get_redis_connection
 import re
 from user.models import User
-from universitylist.models import Country
+from universitylist.models import Country,University
 from celery_tasks.tasks import send_register_active_email
 # Create your views here.
 

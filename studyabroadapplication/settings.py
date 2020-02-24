@@ -103,7 +103,7 @@ DATABASES = {
         # 数据库密码
         'PASSWORD': '123456',
         # 主机名
-        'HOST': 'localhost',
+        'HOST': '39.105.187.101',
         'PORT': '3306',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }

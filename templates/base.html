@@ -14,9 +14,22 @@
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
     <script src="{% static 'jquery.min.js' %}"></script>
     <script src="{% static 'bootstrap.min.js' %}"></script>
+    <style>
+        #header {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: #417690;
+    color: #ffc;
+    overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation" id="header">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

@@ -16,6 +16,6 @@ urlpatterns = [
     url('api/', include(router.urls)),
     path('ajax', views.ajax, name='ajax'),
     #path('api/', views.Api.as_view(), name='api'),
-    path('<int:university_id>/', views.detail, name='detail'),
+    path('country/<int:country_id>/', views.detail, name='detail'),
 ]
 urlpatterns += router.urls

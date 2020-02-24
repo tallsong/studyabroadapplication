@@ -9,7 +9,8 @@ from rest_framework.viewsets import ModelViewSet
 from universitylist.serializers import *
 #from django.db import models
 from .models import *
-
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache    # cache.set(key,value,time) cache.get(key)
 # Create your views here.
 class Api(ModelViewSet):
     # queryset是一个查询数据的查询集，存储这所有的数据库查询之后的数据
@@ -22,7 +23,7 @@ class Bpi(ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = UserInfoSerializer
     # serializer_class用来指定在当前的视图里面进行　序列化与反序列时使用的序列化器（串行器）
-
+#@cache_page(60*15)
 def index(request):
     """
     context = cache.get('index_page_data')
@@ -34,18 +35,35 @@ def index(request):
     """
     limit = 15
     #universities = University.objects.order_by('id')
-    countries = Country.objects.all().order_by('-update_time','id')
-    paginator = Paginator(countries, limit)
+    universities = University.objects.all().order_by('latest_rank','id')
+    paginator = Paginator(universities, limit)
     page = request.GET.get('page')  # 获取页码
+
     try:
-        countries = paginator.page(page)  # 获取某页对应的记录
+        universities = paginator.page(page)  # 获取某页对应的记录
     except PageNotAnInteger:  # 如果页码不是个整数
-        countries = paginator.page(1)  # 取第一页的记录
+        universities = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
-        countries = paginator.page(paginator.num_pages)  # 取最后一页的记
+        universities = paginator.page(paginator.num_pages)  # 取最后一页的记
+    num_pages = paginator.num_pages
+    try:
+        page = int(page)
+    except Exception as e:
+        page = 1
+    if page > paginator.num_pages:   #  num_pages 页面总数
+        page = 1
+    if num_pages < 5:
+        pages = range(1, num_pages+1)
+    elif page <= 3:
+        pages = range(1, 6)
+    elif num_pages - page <= 2:
+        pages = range(num_pages-4, num_pages+1)
+    else:
+        pages = range(page-2, page+3)
     template = loader.get_template('index.html')
     #context.update(countries=countries)
-    context={'countries':countries}
+    context={'universities':universities,
+             'pages':pages}
     return render(request, 'index.html', context)  
     #页面重定向：服务器不返回页面，而是告诉浏览器再去请求其他的url。
     # return render(request,'index.html')
@@ -57,13 +75,16 @@ def ajax(request):
 
 
 
-def detail(request,university_id):
+def detail(request,country_id):
     user = request.user
     if user.is_authenticated:
         con = get_redis_connection('default')
         history_key = 'history_%d'%user.id
-        con.lpush(history_key,university_id)
-    return HttpResponse("You're looking at country %s" % (university_id))
+        country_ids = con.lrange(history_key, 0, 4)
+        if(str(country_id).encode() in country_ids):
+            con.lrem(history_key,0,country_id)
+        con.lpush(history_key,country_id)
+    return HttpResponse("You're looking at country %s" % (country_id))
 
 
 

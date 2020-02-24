@@ -13,33 +13,50 @@ class Continent(models.Model):
 
 class Country(BaseModel):
     name = models.CharField(max_length=50,unique=True)
-    continent=models.ForeignKey(Continent,on_delete=models.CASCADE)
+    continent=models.ForeignKey(Continent,on_delete=models.CASCADE)    #models.CASCADE, 删除关联数据,与之关联也删除  
     short_name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
-
-
-
-class Province(models.Model):
-    name = models.CharField(max_length=50,unique=True)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)    #models.CASCADE, 删除关联数据,与之关联也删除   
-    def __str__(self):
-        return self.name
-
-    
+   
 class University(models.Model):
-    name = models.CharField(max_length=50,unique=True)
-    province = models.ForeignKey(Province, on_delete=models.CASCADE)  # School headquarters location
+    name = models.CharField(max_length=1000)
     latest_rank = models.IntegerField()
+    city = models.CharField(max_length=50,default=None,null=True)
+    country=models.CharField(max_length=50,default=None,null=True)   
+    address = models.CharField(max_length=500,default=None)
+    website = models.CharField(max_length=500,default=None,null=True)
+    summary = models.CharField(max_length=10000,default=None,null=True)
+    longitude=models.FloatField(default=None,null=True)
+    latitude = models.FloatField(default=None,null=True)
+    date_url=models.CharField(max_length=1000,default=None)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')  # verbose_name来设置详细名称
+    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     def __str__(self):
         return self.name
 
+class University_more(models.Model):
+    name = models.CharField(max_length=1000)
+    key = models.CharField(max_length=500,null=True)
+    value = models.CharField(max_length=100,null=True)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')  # verbose_name来设置详细名称
+    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    def __str__(self):
+        return self.name+"_more"
+
+class University_indicator_and_subject_rankings(models.Model):
+    name = models.CharField(max_length=1000)
+    key = models.CharField(max_length=500,null=True)
+    value = models.CharField(max_length=100,null=True)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')  # verbose_name来设置详细名称
+    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    def __str__(self):
+        return self.name+"_indicator_and_subject_rankings"
 
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
-    universty= models.ForeignKey(University, on_delete=models.CASCADE)
+    name = models.CharField(max_length=500)
+    #universty= models.ForeignKey(University, on_delete=models.CASCADE)
     TOEFL = models.IntegerField(null=True)
     IELTS = models.IntegerField(null=True)
     GRE = models.IntegerField()
