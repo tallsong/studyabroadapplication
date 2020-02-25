@@ -1,0 +1,4 @@
+# 指定根据表中的哪些字段建立索引数据
+{{ object.name }} # 根据名称建立索引
+{{ object.summary }} # 根据简介建立索引
+{{ object.adderss }} # 根据简介建立索引

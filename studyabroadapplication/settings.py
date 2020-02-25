@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'celery',
     'rest_framework',
     'corsheaders',
+    'haystack',
     #'tinymce', # 富文本剪辑器
     # celery and flower
     # django-allauth 提供了常见的注册和认证方式，比如邮件、twitter、facebook、github、
@@ -191,6 +192,21 @@ SESSION_CACHE_ALIAS = "default"
 # 配置登录url地址
 LOGIN_URL='/user/login' # /accounts/login
 MY_HOST='39.105.187.101'
+
+
+#  https://blog.csdn.net/weixin_44485643/article/details/104243048?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # 使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE  =  15
+
 
 try:
     from .settings_location import *

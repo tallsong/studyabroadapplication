@@ -20,6 +20,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('search', include('haystack.urls')), # 全文检索框架
     path(r'user/', include('user.urls',namespace='user')),
     path('', include('universitylist.urls',namespace='universitylist')),
     path('favicon.ico',RedirectView.as_view(url='/static/img/favicon.ico')),   

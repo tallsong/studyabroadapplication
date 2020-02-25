@@ -33,7 +33,7 @@ def index(request):
         context={'countries_cache':countries,}
         cache.set('index_page_data',context[countries_cache], 3600)
     """
-    limit = 15
+    limit = 12
     #universities = University.objects.order_by('id')
     universities = University.objects.all().order_by('latest_rank','id')
     paginator = Paginator(universities, limit)

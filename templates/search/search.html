@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}search result for {{ query }}{% endblock title %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h2 style="text-align:center">
+            {# topics.paginator.number_pages 返回总页数 #}
+            University
+            Page {{ page.number }} of {{ page.paginator.num_pages }}
+        </h2>
+        <div class="row" style="text-align:center">
+            <form method="get" action="/search">
+                <input type="text" name="q" placeholder="search university">
+                <input type="submit" name="" value="search">
+            </form>
+        </div>
+        <div class="col-md-12" style="border:1px solid black">
+            <table class="table table-striped" style="">
+                <thead>
+                    <tr>
+                        <th>latest_rank</th>
+                        <th style="text-align:center ">name</th>
+                        <th>website</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for university in page %}
+                    <tr>
+                        <td style="width:5px;text-align:center ">{{university.object.latest_rank}}</td>
+                        <td style="width:350px;"><img style="width:38px;height:25px" src='static/img/flag/{{university.object.country }}.jpg' /><a href="">{{university.object.name}} </a></td>
+                        <td>{{university.object.website}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagenation">
+                <p id="page" align="center">
+                    {% if page.has_previous %}
+                    <a href="/search?q={{ query }}&page={{ page.previous_page_number }}" id="previous">previous page</a>
+                    {% endif %}
+                    {# universities.paginator.page_range 这个函数返回包含一个所有页码数的 range 对象 #}
+                    {# 即 range(1, topics.paginator.num_pages + 1) #}
+                    {% for page_number in paginator.page_range %}
+                        {% ifequal page_number  page.number %}
+                        <a href="/search?q={{ query }}&page={{ page_number }}" class="active">{{ page_number }}</a>
+                        {% else %}
+                        <a href="?page={{ page_number }}">{{ page_number }}</a>
+                        {% endifequal %}
+                    {% endfor %}
+                    {% if page.has_next %}
+                    <a href="/search?q={{ query }}&page={{ page.next_page_number }}" id="next">next page></a>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+</div>
+{% endblock body %}
+{# 网页底部html元素块 #}
+{% block bottom %}
+{% endblock bottom %}
+{# 网页底部引入文件块 #}
+{% block bottomfiles %}{% endblock bottomfiles %}

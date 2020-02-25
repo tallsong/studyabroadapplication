@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 {% load static %}
 <head>
     <meta charset="UTF-8">
@@ -16,16 +16,39 @@
     <script src="{% static 'bootstrap.min.js' %}"></script>
     <style>
         #header {
-    width: auto;
-    height: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    background: #417690;
-    color: #ffc;
-    overflow: hidden;
+            width: auto;
+            height: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px;
+            background: #417690;
+            color: #ffc;
+            overflow: hidden;
         }
+
+        .pagenation {
+            height: 32px;
+            text-align: center;
+            font-size: 0;
+            margin: 30px auto;
+        }
+
+            .pagenation a {
+                display: inline-block;
+                border: 1px solid #d2d2d2;
+                background-color: #f8f6f7;
+                font-size: 12px;
+                padding: 7px 10px;
+                color: #666;
+                margin: 5px
+            }
+
+            .pagenation .active {
+                background-color: #fff;
+                color: #43a200;
+                border:1px solid #43a200;
+            }
     </style>
 </head>
 <body>
