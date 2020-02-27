@@ -1,0 +1,124 @@
+﻿{% extends 'base.html' %}
+{% block title %}login{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered">
+            <caption></caption>
+            <tbody style="text-align:center">
+                <tr>
+                    <td colspan="4">
+                        <h1 id="uid" ;style="text-align:center;font-size:xx-large" uname="{{university.id}}">
+                            {{university.name}}
+                            {%if is_collect %}
+                            <span style="color:red" class="glyphicon glyphicon-heart " id="collect"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-heart " id="collect"></span>
+                            {% endif %}
+                        </h1>
+                    </td>{% csrf_token %}
+                </tr>
+                <tr>
+                    <td>
+                        <span class="rank">
+                            #{{university.latest_rank}}
+                        </span>
+
+                    </td>
+                    <td>
+                        <h3>SAAMIS Universities</h3>
+                    </td>
+                    <td colspan="2" rowspan="6"> Mumbai</td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h2>Address</h2>
+                        <p>{{university.address}}</p>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h2>Website</h2>
+                        {{university.website}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" rowspan="3">
+                        <h2>Address</h2>
+                        {{university.address}}
+                    </td>
+
+
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <h2 style="text-align:center"> Summary</h2>
+                        <p style=" text-indent:2em;">{{university.summary}}</p>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock body %}
+
+
+{# 网页底部html元素块 #}
+{% block bottom %}
+
+{% endblock bottom %}
+{# 网页底部引入文件块 #}
+{% block bottomfiles %}
+
+{% if not user.is_authenticated %}
+<script>
+    $('#home').removeAttr("class");
+    $('#collect').click(function () {
+        alert('login first');
+    })
+</script>
+{% else %}
+<script>
+    $('#home').removeAttr("class");
+    $('#collect').click(function () {
+        if ($(this).css("color") === "rgb(51, 51, 51)") {
+            $(this).css("color", "red");
+            var university_id = $('#uid').attr("uname");
+            var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            params = { 'university_id': university_id, 'csrfmiddlewaretoken': csrf, "type": "add" }
+            $.post('/user/collect', params, function (data) {
+                if (data.res == 0) {
+                    alert(data.msg);
+                }
+                if (data.res == 1) {
+                    alert(data.msg);
+                }
+            })
+        } else {
+            $(this).css("color", "rgb(51, 51, 51)");
+            var university_id = $('#uid').attr("uname");
+            var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            params = { 'university_id': university_id, 'csrfmiddlewaretoken': csrf, "type": "minus" }
+            $.post('/user/collect', params, function (data) {
+                if (data.res == 2) {
+                    alert(data.msg);
+                }
+            })
+        }
+
+    })
+</script>
+{% endif %}
+{% endblock bottomfiles %}

@@ -12,8 +12,6 @@
     -->
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
-    <script src="{% static 'jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap.min.js' %}"></script>
     <style>
         #header {
             width: auto;
@@ -47,8 +45,72 @@
             .pagenation .active {
                 background-color: #fff;
                 color: #43a200;
-                border:1px solid #43a200;
+                border: 1px solid #43a200;
             }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            content: "";
+            clear: both;
+            height: 0;
+        }
+
+        .thumb-right, .thumb-right-flush {
+            float: right;
+            margin: 0 0 10px 10px;
+        }
+
+        .map-thumb:after {
+            width: 103px;
+            height: 19px;
+            position: absolute;
+            top: 0;
+            right: 5px;
+            content: "";
+            background: url(/static/images/ah/enlarge-map.png) no-repeat left top;
+        }
+
+        .t-slack {
+            margin-bottom: 15px;
+        }
+
+        .icon-wrapper {
+            width: 35px;
+            display: inline-block;
+            float: left;
+            margin-left: 4px;
+        }
+
+        .icon-website {
+            background-position: 0 -64px;
+            width: 26px;
+            height: 23px;
+        }
+
+        .directory-data {
+            margin-left: 46px;
+            margin-top: 20px;
+        }
+
+        .h-taut {
+            margin-bottom: 5px;
+        }
+
+        .rank {
+            color: #222;
+            border-radius: 0;
+            text-shadow: 0 1px 0 #fff3cc;
+            background: linear-gradient(to top left, #e0b938, #f7dfa1, #e0b938);
+            display: inline-block;
+            padding: .55em .25em;
+            min-width: 2em;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            float: right;
+            margin: 0 -5px 0px 0;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +152,9 @@
                         </ul>
                     </div>
                     {% else %}
-                    <a href="{% url 'user:login' %}" class="btn btn-default" style="float:right;margin-top:8px" id="register-button">login</a>
+                    <a href="{% url 'user:login' %}" class="btn btn-default" style="float: right;
+        margin-top: 8px
+" id="register-button">login</a>
                     <a href="{% url 'user:register' %}" class="btn btn-default" style="float:right;margin-top:8px" id="login_button">register</a>
                     {% endif %}
                 </div>
@@ -110,10 +174,10 @@
 
     {% endblock bottom %}
     {# 网页底部引入文件块 #}
-    {% block bottomfiles %}
 
 
-    {% endblock bottomfiles %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
     <script>
         'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
         window.onresize = function () {
@@ -169,6 +233,10 @@
 
         var Height = window.innerHeight//浏览器窗口的内部高度（包括滚动条）
     </script>
+    {% block bottomfiles %}
+
+
+    {% endblock bottomfiles %}
 
 
 

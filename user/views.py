@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.http import Http404, HttpResponseRedirect,HttpResponse
+from django.http import Http404, HttpResponseRedirect,HttpResponse,JsonResponse
 from django.template import  RequestContext,loader
 from django.urls import reverse
 from django.contrib.auth import authenticate, login,logout
@@ -181,17 +181,37 @@ class UserInfoView(LoginRequiredMixin,View):
         user = request.user
         con = get_redis_connection('default')
         history_key = 'history_%d' % user.id
-        country_ids = con.lrange(history_key, 0, 4)
-        country_list = []
-        for id in country_ids:
-            country = Country.objects.get(id=int(id))
-            country_list.append(country)
+        university_ids = con.lrange(history_key, 0, 4)
+        university_list = []
+        for id in university_ids:
+            university = University.objects.get(id=int(id))
+            university_list.append(university)
 
         ## 组织上下文
-        context = {'country_list':country_list,}
+        context = {'university_list':university_list,}
 
         #除了你给模板文件传递的模板变量之外，django框架会把request.user也传给模板文件
         return render(request, 'user_info.html', context)
+
+
+
+class CollectView(View):
+    def post(self,request):
+        user = request.user
+        if not user.is_authenticated:
+            # 用户未登录
+            return JsonResponse({'res':0, 'msg':'loginfirst'})
+        university_id=request.POST.get('university_id')
+        collec_key='collect_%s' % user.id
+        type=request.POST.get('type')
+        if(type=='add'):
+            con = get_redis_connection('default')
+            con.lpush(collec_key,university_id)
+            return JsonResponse({'res':1, 'msg':'collect successful'})
+        elif(type=="minus"):
+            con = get_redis_connection('default')
+            con.lrem(collec_key,0,university_id)
+            return JsonResponse({'res':2, 'msg':'minus successful'})
 
 def register(request):
     if(request.method == 'GET'):

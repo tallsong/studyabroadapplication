@@ -21,19 +21,21 @@ class SaamisPipeline(object):
         pass
     def process_item(self, item, spider):
         if(spider.name=='universitylist'):
-            university=University()
-            university.name=item['Name']
-            university.latest_rank=item['GlobalRank']
-            university.city=item['City']
-            university.country=item['Country']
+            #university=University()
+            university = University.objects.get(name=item['Name'])
+            #university.name=item['Name']
+            #university.latest_rank=item['GlobalRank']
+            #university.city=item['City']
+            #university.country=item['Country']
             university.address=item['Address']
-            university.website=item['Website']
-            university.summary=item['Summary']
-            university.longitude=item['data_long']
-            university.latitude=item['data_lat']
-            university.date_url=item['data_url']
+            #university.website=item['Website']
+            #university.summary=item['Summary']
+            #university.longitude=item['data_long']
+            #university.latitude=item['data_lat']
+            #university.date_url=item['data_url']
             university.save()
-            print(item['Name'])
+
+            print(item['Address'])
         return item
         if(spider.name=='university_more'):
             for i in item['subject_rankings']:

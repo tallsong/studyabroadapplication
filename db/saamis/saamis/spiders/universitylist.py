@@ -37,7 +37,7 @@ class UniversitylistSpider(scrapy.Spider):
 
     def parse_detail(self, response):
         item = response.meta["item"]
-        item['Address']='\n'.join(response.xpath('''//h2[text()="Address"]/../div/text()''').extract())   # list
+        item['Address']='\n'.join(response.xpath('''//h2[text()="Address"]/../div[1]/text()''').extract())   # list
         item['Website'] = response.xpath('''//h2[text()="Website"]/../a/@href''').extract_first()
         #item['Summary']=''.join(''.join(response.xpath('//div[@data-test-id="summary-blurb"]/text()').extract()).strip().replace('\n', '').replace('\r', ''))
         item['Summary'] = response.xpath('string(//div[@data-test-id="summary-blurb"])').extract_first()

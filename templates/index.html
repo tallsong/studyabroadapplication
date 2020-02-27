@@ -28,7 +28,7 @@
                     {% for university in universities.object_list %}
                     <tr>
                         <td style="width:5px;text-align:center ">{{university.latest_rank}}</td>
-                        <td style="width:350px;height:50px"><img style="width:38px;height:25px" src='static/img/flag/{{university.country }}.jpg' /><a href="">{{university.name}} </a></td>
+                        <td style="width:350px;height:50px"><img style="width:38px;height:25px" src='static/img/flag/{{university.country }}.jpg' /><a href="{% url 'universitylist:detail' university.id %}">{{university.name}} </a></td>
                         <td>{{university.website}}</td>
                     </tr>
                     {% endfor %}
@@ -37,7 +37,7 @@
             <div class="pagenation">
                 <p id="page" align="center">
                     {% if universities.has_previous %}
-                    <a href="?page={{ universities.previous_page_number }}" id="previous">previous page</a>
+                    <a href="?page={{ universities.previous_page_number }}" id="previous"><</a>
                     {% endif %}
                     {# universities.paginator.page_range 这个函数返回包含一个所有页码数的 range 对象 #}
                     {# 即 range(1, topics.paginator.num_pages + 1) #}
@@ -49,11 +49,12 @@
                     {% endifequal %}
                     {% endfor %}
                     {% if universities.has_next %}
-                    <a href="?page={{ universities.next_page_number }}" id="next">next page</a>
+                    <a href="?page={{ universities.next_page_number }}" id="next">></a>
                     {% endif %}
                 </p>
             </div>
         </div>
+    </div>
 </div>
 <!--<script>
     var re = /(\d+)$/;
