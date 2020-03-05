@@ -93,4 +93,8 @@
 {% block bottom %}
 {% endblock bottom %}
 {# 网页底部引入文件块 #}
-{% block bottomfiles %}{% endblock bottomfiles %}
+{% block bottomfiles %}
+<script>
+    $("#mynav").find('li').eq(0).addClass("active");
+</script>
+{% endblock bottomfiles %}

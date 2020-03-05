@@ -1,5 +1,5 @@
 ﻿{% extends 'base.html' %}
-{% block title %}login{% endblock title %}
+{% block title %}{{university.name}}{% endblock title %}
 
 {% block body %}
 <div class="container">
@@ -105,7 +105,7 @@
                 if (data.res == 1) {
                     alert(data.msg);
                 }
-            })
+            })      
         } else {
             $(this).css("color", "rgb(51, 51, 51)");
             var university_id = $('#uid').attr("uname");

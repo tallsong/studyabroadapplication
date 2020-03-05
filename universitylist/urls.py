@@ -13,6 +13,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('index', views.index, name='index'),
     ## 根据view.后面的参数确定对应的视图， path('', views.index, name='index'，这样也可以
+    path('map',views.Map.as_view(), name='map'),
     url('api/', include(router.urls)),
     path('ajax', views.ajax, name='ajax'),
     #path('api/', views.Api.as_view(), name='api'),

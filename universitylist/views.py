@@ -75,6 +75,13 @@ def ajax(request):
         print(request.META[i])
     return HttpResponse("okkkkkkkkkkkkkk"+str(request.body)+request.get_host()+request.get_full_path())
 
+class Map(View):
+    def get(self,request):
+        universities = University.objects.filter(longitude__isnull=False)#37个为null
+        context={'universities':universities,
+                'pages':1}
+        return render(request, 'map.html', context)  
+
 
 #@transaction.atomic
 def detail(request,university_id):

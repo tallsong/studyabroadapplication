@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}map{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <!--<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />-->
+        <div id="container"></div>
+        <!-- 加载地图JSAPI脚本 -->
+
+    </div>
+</div>
+{% endblock body %}
+{# 网页底部html元素块 #}
+{% block bottom %}
+{% endblock bottom %}
+{# 网页底部引入文件块 #}
+{% block bottomfiles %}
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=ad54c0ce51f7f04161eda3788cb842ac"></script>
+<script>
+            
+    var map = new AMap.Map('container', {
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 8, //初始化地图层级
+        center: [-73.9983, 40.7257],//初始化地图中心点
+        //lang:'zh_en',
+        lang:'en',
+    });
+    var onMarkerClick = function (e) {
+        infoWindow.open(map, e.target.getPosition());//打开信息窗体
+        //e.target就是被点击的Marker
+    }
+
+    {% for university in universities %}
+    var marker{{ university.id }} = new AMap.Marker({
+        position: new AMap.LngLat({{ university.longitude }}, {{ university.latitude}}  ),
+        title: '{{university.name}}',
+        // content: '{{university.name}}',
+
+    });
+    marker{{ university.id }}.on('click', markerClick{{ university.id }});
+    function markerClick{{ university.id }}(e) {
+        console.log('{{university.name}}');
+        window.open("{% url 'universitylist:detail' university.id %}")
+    }
+    map.add(marker{{ university.id }});
+    // marker{ { university.id } }.on('click', onMarkerClick);
+    {% endfor %}
+    //var marker = new AMap.Marker({
+    //    position: new AMap.LngLat(  -71.1041,   42.3656),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+    //    title: 'Massachusetts Institute of Technology'
+    //});
+
+    //// 将创建的点标记添加到已有的地图实例：
+    //map.add(marker);
+
+    // 移除已创建的 marker
+    //map.remove(marker);
+    $("#mynav").find('li').eq(1).addClass("active");
+
+        
+</script>
+{% endblock bottomfiles %}
