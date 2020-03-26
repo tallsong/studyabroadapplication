@@ -1,0 +1,43 @@
+﻿{% extends 'base.html' %}
+{% block title %}collect{% endblock title %}
+
+{% block body %}
+{% load static %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="border:1px solid black">
+            <h1 style="text-align:center">collect</h1>
+            <table class="table table-striped">
+                <tr>
+                    <td>number</td>
+                    <td>name</td>
+
+                </tr>
+                {% if university_list %}
+
+                {% for university in university_list %}
+                <tr>
+                    <td>{{university.id}}</td>
+                    <td><a href="{% url 'universitylist:detail' university.id %}">{{university.name}}</a></td>
+
+
+
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock body %}
+
+
+{# 网页底部html元素块 #}
+{% block bottom %}
+{% endblock bottom %}
+{# 网页底部引入文件块 #}
+{% block bottomfiles %}{% endblock bottomfiles %}

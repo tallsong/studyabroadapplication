@@ -2,35 +2,50 @@
 {% block title %}userinfo{% endblock title %}
 
 {% block body %}
-{% load static %}
 <div class="container">
     <div class="row">
-        <div class="col-md-12" style="border:1px solid black">
-            <h1 style="text-align:center">user_info_center</h1>
-            <table class="table table-striped">
-                <tr>
-                    <td>number</td>
-                    <td>name</td>
-
-                </tr>
-                {% if university_list %}
-
-                {% for university in university_list %}
-                <tr>
-                    <td>{{university.id}}</td>
-                    <td><a>{{university.name}}</a></td>
-
-
-
-                </tr>
-                {% endfor %}
-                {% endif %}
-            </table>
+        {% if errmsg %}
+        <h1 style="text-align:center">{{errmsg|safe}}</h1>
+        {% else %}
+        <h1 style="text-align:center">user_info</h1>
+        {% endif %}
+        <div class="jumbotron" style="margin:0 auto;width:50%;text-align:center">
+            <form class="form-horizontal" role="form" method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="country" class="col-sm-2 control-label">country</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="country" name="country"  value="{{ country }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toefl" class="col-sm-2 control-label">toefl</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="toefl" name="toefl" value="{{toefl}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="degree_type" class="col-sm-2 control-label">degree_type</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="degree_type" name="degree_type" value="{{degree_type}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fee" class="col-sm-2 control-label">fee</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="fee" name="fee" value="{{fee}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">update</button>
+                    </div>
+                </div>
+            </form>
 
         </div>
     </div>
 </div>
-
 
 
 {% endblock body %}

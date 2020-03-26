@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
     <script src="{% static 'jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <!--<script src="{% static 'bootstrap.min.js' %}"></script>-->
     {% block style %}{% endblock style %}
     <style>
         #container {
@@ -121,6 +121,22 @@
             float: right;
             margin: 0 -5px 0px 0;
         }
+        .info a{
+            color: #ffc;
+            margin-left:0;
+            margin-right0;
+            padding:0;
+        }
+        .info span{
+            color: #ffc;
+            margin-left:0;
+            margin-right0;
+            
+        }
+        .info a:hover{
+            color: black;
+            text-decoration:none;
+        }
     </style>
 </head>
 <body>
@@ -142,29 +158,30 @@
                     <!--周边商场,推荐项目-->
                     <li><a href="/map"><span class="glyphicon glyphicon-map-marker"></span> Search by map</a></li>
                     <!-- 收藏自己的喜欢的项目 -->
-                    <li><a href="#favorite"><span class="glyphicon glyphicon-star"></span> Favorites</a></li>
-                    <li><a href="#support"><span class="glyphicon glyphicon-headphones"></span> Support</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-star"></span> Conditional query</a></li>
+                    <li><a href="#support"><span class="glyphicon glyphicon-headphones"></span> Donation</a></li>
                     <!--  个人介绍什么的，请求赞助，可以放支付宝二维码-->
-                </ul>
 
+                </ul>
                 <div id="login">
                     {% if user.is_authenticated %}
-                    <div class="dropdown">
+                    <div>
 
-                        <div style="float:right;margin-top:8px" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">welcome：<em>{{ user.username }}</em></div>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="border:none;text-align:center;position:inherit;float:right;margin-top:30px;margin-right:-150px;background-color:transparent">
-                            <li role="presentation">
-                                <a style="margin-right:20px" role="menuitem" tabindex="-1" href="{% url 'user:userinfo' %}">userinfo</a>
-                            </li>
-                            <li role="presentation">
-                                <a style="margin-right:20px" role="menuitem" tabindex="-1" href="{% url 'user:logout' %}">logout</a>
-                            </li>
-                        </ul>
+                        <div style="float:right;margin-top:8px;" class="info" id="dropdownMenu1" data-toggle="dropdown">
+                            welcome：<em>{{ user.username }}</em>
+                            <span>|</span>
+
+                            <a style="margin-right:20px"  href="{% url 'user:userinfo' %}">userinfo</a>
+                            <span>|</span>
+                            <a style="margin-right:20px" role="menuitem" tabindex="-1" target="_blank" href="{% url 'user:favorite' %}">collect</a>
+                            <span>|</span>
+                            <a style="margin-right:20px" role="menuitem" tabindex="-1" href="{% url 'user:history'  %}">history</a>
+                            <span>|</span>
+                            <a style="margin-right:20px" role="menuitem" tabindex="-1" href="{% url 'user:logout'   %}">logout</a>
+                        </div>
                     </div>
                     {% else %}
-                    <a href="{% url 'user:login' %}" class="btn btn-default" style="float: right;
-        margin-top: 8px
-" id="register-button">login</a>
+                    <a href="{% url 'user:login' %}" class="btn btn-default" style="float:right;margin-top:8px" id="register-button">login</a>
                     <a href="{% url 'user:register' %}" class="btn btn-default" style="float:right;margin-top:8px" id="login_button">register</a>
                     {% endif %}
                 </div>
@@ -186,7 +203,7 @@
     {# 网页底部引入文件块 #}
 
 
- 
+
     <script>
         'use strict';//在strict模式下运行的JavaScript代码，强制通过var申明变量，未使用var申明变量就使用的，将导致运行错误。
         window.onresize = function () {

@@ -5,7 +5,28 @@ from db.base_model import BaseModel
 
 
 class User(AbstractUser, BaseModel):
+    #晚点加进去
+    country=models.CharField(max_length=50,null=True)
+    school_type=models.CharField(max_length=50,null=True)
+    degree = models.CharField(max_length=50,null=True)
+    degree_type = models.CharField(max_length=50,null=True)
+    school_rank = models.CharField(max_length=50,null=True)
+    graduate_school=models.CharField(max_length=50,null=True)
+    ielts=models.CharField(max_length=50,null=True)
+    toefl=models.CharField(max_length=50,null=True)
+    fee=models.CharField(max_length=50,null=True)
+    age=models.IntegerField(null=True)
     more_informations=models.CharField(max_length=50,null=True)
+    sex = models.BooleanField(null=True)
+    discipline_competition=models.BooleanField(null=True)
+    club_activity=models.BooleanField(null=True)
+    research_experience=models.BooleanField(null=True)
+    work_experience=models.BooleanField(null=True)
+
+
+
+
+
     #username = models.CharField(max_length=50,unique=True)
     #email = models.CharField(max_length=50)
     #password = models.CharField(max_length=50)

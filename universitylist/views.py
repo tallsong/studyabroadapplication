@@ -13,7 +13,9 @@ from universitylist.models import *
 from django.views.decorators.cache import cache_page
 from django.views.generic import View
 from django.core.cache import cache    # cache.set(key,value,time) cache.get(key)  con=get_redis_connection('default')
+from utils.mixin import LoginRequiredMixin
 # Create your views here.
+
 class Api(ModelViewSet):
     # queryset是一个查询数据的查询集，存储这所有的数据库查询之后的数据
     queryset = Continent.objects.all()
@@ -94,7 +96,7 @@ def detail(request,university_id):
     if user.is_authenticated:
         con = get_redis_connection('default')
         history_key = 'history_%d'%user.id
-        university_ids = con.lrange(history_key, 0, 4)
+        university_ids = con.lrange(history_key, 0, -1)
         if(str(university_id).encode() in university_ids):
             con.lrem(history_key,0,university_id)
         con.lpush(history_key,university_id)

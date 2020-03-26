@@ -10,6 +10,8 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login/',    views.LoginView.as_view(), name='login'),
     path('logout/',    views.LogoutView.as_view(), name='logout'),
+    path('favorite', views.FavoriteView.as_view(), name='favorite'),
+    path('history', views.HistoryView.as_view(), name='history'),
     path('active/<str:token>',views.ActiveView.as_view(), name='active'), # �û�����
     path('collect', views.CollectView.as_view(), name='collect'),
 ]

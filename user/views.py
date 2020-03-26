@@ -17,6 +17,44 @@ from celery_tasks.tasks import send_register_active_email
 # Create your views here.
 
 
+
+
+class HistoryView(LoginRequiredMixin,View):
+    def get(self, request):
+        # 获取用户的个人信息
+        user = request.user
+        con = get_redis_connection('default')
+        history_key = 'history_%d' % user.id
+        university_ids = con.lrange(history_key, 0, -1)
+        university_list = []
+        for id in university_ids:
+            university = University.objects.get(id=id)
+            university_list.append(university)
+
+        ## 组织上下文
+        context = {'university_list':university_list,}
+
+        #除了你给模板文件传递的模板变量之外，django框架会把request.user也传给模板文件
+        return render(request, 'history.html', context)
+class FavoriteView(LoginRequiredMixin,View):
+    '''用户中心-信息页'''
+    def get(self, request):
+        # 获取用户的个人信息
+        user = request.user
+        con = get_redis_connection('default')
+        history_key = 'collect_%d' % user.id
+        university_ids = con.lrange(history_key, 0, -1)
+        university_list = []
+        for id in university_ids:
+            university = University.objects.get(id=int(id))
+            university_list.append(university)
+
+        ## 组织上下文
+        context = {'university_list':university_list,}
+
+        #除了你给模板文件传递的模板变量之外，django框架会把request.user也传给模板文件
+        return render(request, 'collect.html', context)
+
 class LoginView(View):
     def get(self, request):
         '''显示登录页面'''
@@ -188,13 +226,19 @@ class UserInfoView(LoginRequiredMixin,View):
             university_list.append(university)
 
         ## 组织上下文
-        context = {'university_list':university_list,}
+        context = {"country":user.country,"toefl":user.toefl,"degree_type":user.degree_type,"fee":user.fee}
 
         #除了你给模板文件传递的模板变量之外，django框架会把request.user也传给模板文件
         return render(request, 'user_info.html', context)
-
-
-
+    def post(self, request):
+        user = request.user
+        user.country=request.POST.get('country')
+        user.toefl=request.POST.get('toefl')
+        user.degree_type=request.POST.get('degree_type')
+        user.fee=request.POST.get('fee')
+        user.save()
+        context = {"country":user.country,"toefl":user.toefl,"degree_type":user.degree_type,"fee":user.fee}
+        return render(request, 'user_info.html', context)
 class CollectView(View):
     def post(self,request):
         user = request.user
@@ -206,11 +250,11 @@ class CollectView(View):
         type=request.POST.get('type')
         if(type=='add'):
             con = get_redis_connection('default')
-            con.lpush(collec_key,university_id)
+            con.lpush(collec_key,int(university_id))
             return JsonResponse({'res':1, 'msg':'collect successful'})
         elif(type=="minus"):
             con = get_redis_connection('default')
-            con.lrem(collec_key,0,university_id)
+            con.lrem(collec_key,0,int(university_id))
             return JsonResponse({'res':2, 'msg':'minus successful'})
 
 def register(request):
